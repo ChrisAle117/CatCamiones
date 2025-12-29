@@ -16,7 +16,7 @@ type Props = {
     caballaje?: string;
 };
 
-export default function VehicleCard({ id, title, price, desc, img, modelo, anio, motor, transmision, caballaje }: Props) {
+export default function VehicleCard({ id: _id, title, price, desc, img, modelo, anio, motor, transmision, caballaje }: Props) {
     const [loaded, setLoaded] = useState(false);
 
     // Sanea título por si viene con '|' accidental al inicio
@@ -25,12 +25,12 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
     const waText = `Hola, estoy interesado en el vehículo: ${cleanTitle}. ¿Me brindas más información?`;
     const waHref = `https://wa.me/+5217771810370?text=${encodeURIComponent(waText)}`;
 
-    
+
     const logoSrc = document.documentElement.classList.contains("dark")
         ? "/images/logotipo-claro.png"
         : "/images/logotipo.png";
 
-    
+
     const candidates = useMemo(() => {
         const raw = (img || "").trim();
         if (!raw) return [] as string[];
@@ -44,14 +44,14 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
             return [raw, raw.replace(/\.webp$/i, ".png"), raw.replace(/\.webp$/i, ".jpg")];
         }
         if (hasExt) {
-            
+
             return [asWebp(raw), raw, swap(raw)];
         }
-        
+
         return [`${raw}.webp`, `${raw}.png`, `${raw}.jpg`];
     }, [img]);
 
-    
+
     const [currentSrc, setCurrentSrc] = useState<string>(candidates[0] || logoSrc);
 
     useEffect(() => {
@@ -59,17 +59,17 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
         setCurrentSrc(candidates[0] || logoSrc);
     }, [candidates, logoSrc]);
 
-    
+
     const specs = useMemo(() => {
         const s: Record<string, string | undefined> = {};
-        
+
         if (modelo) s.modelo = modelo;
         if (anio) s.anio = anio;
         if (motor) s.motor = motor;
         if (transmision) s.transmision = transmision;
         if (caballaje) s.caballaje = caballaje;
 
-        
+
         const yearMatch = cleanTitle.match(/\b(19|20)\d{2}\b/);
         if (!s.anio && yearMatch) s.anio = yearMatch[0];
         const modelFromTitle = yearMatch ? cleanTitle.replace(yearMatch[0], "").trim().replace(/[\s-–]+$/, "") : cleanTitle.trim();
@@ -105,7 +105,7 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
     const normalizeSentence = (s?: string) => {
         if (!s) return s;
         const lower = s.toLocaleLowerCase('es-MX');
-    return lower.replace(/^\s*([a-zñáéíóúü])/i, (_m, c) => c.toLocaleUpperCase('es-MX'));
+        return lower.replace(/^\s*([a-zñáéíóúü])/i, (_m, c) => c.toLocaleUpperCase('es-MX'));
     };
 
     return (
@@ -117,7 +117,7 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
             </div> */}
             {/* Media */}
             <div className="relative aspect-[4/3] w-full bg-gradient-to-b from-gray-50 to-white shrink-0">
-                
+
                 {!loaded && (
                     <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100" />
                 )}
@@ -131,11 +131,11 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
                         draggable={false}
                         onLoad={() => setLoaded(true)}
                         onError={() => {
-                            
+
                             const idx = candidates.indexOf(currentSrc);
                             const next = idx >= 0 && idx < candidates.length - 1 ? candidates[idx + 1] : null;
                             setCurrentSrc(next || logoSrc);
-                            
+
                         }}
                         className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                     />
@@ -150,16 +150,16 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
                     />
                 )}
 
-                
+
                 <div className="absolute right-0 top-0 rounded-bl-xl bg-[#006CFA] px-3 py-2 text-base font-bold md:text-lg text-white shadow-[0_4px_14px_rgba(0,0,0,0.15)]">
                     {price}
                 </div>
 
-                
+
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white/90 to-transparent" />
             </div>
 
-            
+
             <div className="flex flex-col flex-1 px-3 sm:px-4 md:px-5 pb-4 sm:pb-5 pt-3 sm:pt-4">
                 <h3
                     className="text-sm sm:text-base md:text-lg font-bold text-gray-900 transition-colors group-hover:text-gray-950"
@@ -202,7 +202,7 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
                 </a>
             </div>
 
-            
+
             <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-insetring-black/5 transition-opacity group-hover:opacity-0" />
         </article>
     );
