@@ -13,6 +13,7 @@ export type Vehicle = {
 };
 
 export const vehicles: Vehicle[] = [
+    // --- CAMIONES ---
     {
         id: 1,
         title: 'FREIGHTLINER M2 2016',
@@ -133,7 +134,6 @@ export const vehicles: Vehicle[] = [
         transmision: 'EATON 10 automática',
         caballaje: '350 HP'
     },
-
     {
         id: 11,
         title: 'CAMIÓN VOLTEO INTERNATIONAL AGUILA 2005',
@@ -169,183 +169,6 @@ export const vehicles: Vehicle[] = [
     },
     {
         id: 14,
-        title: 'CAMIÓN PIPA KENWORTH',
-        price: '$650,000 MXN',
-        img: '/images/T370.png',
-        category: 'camiones',
-        modelo: 'T370',
-        motor: 'CUMMINS PX8',
-        transmision: 'Automática de 6 velocidades',
-        caballaje: '240 HP'
-    },
-    {
-        id: 15,
-        title: 'CAMIÓN PIPA KENWORTH T370',
-        price: '$635,000 MXN',
-        img: '/images/PIPA.png',
-        category: 'camiones',
-        modelo: 'T370',
-        anio: '2008',
-        motor: 'CUMMINS PX8',
-        transmision: 'Automática de 6 velocidades',
-        caballaje: '240 HP'
-    },
-    {
-        id: 16,
-        title: 'CAMIÓN FREIGHTLINER REVOLVEDORA',
-        price: '$500,000 MXN',
-        img: '/images/REVOLVEDORA.png',
-        category: 'camiones',
-        modelo: 'FREIGHTLINER M2 106',
-        anio: '2004',
-        motor: 'CATERPILLAR 3126',
-        transmision: 'manual'
-    },
-    {
-        id: 17,
-        title: 'PLATAFORMA INTERNATIONAL 2016',
-        price: '$650,000 MXN',
-        img: '/images/PLATROJA.png',
-        category: 'camiones',
-        modelo: 'PROSTAR',
-        anio: '2016',
-        motor: 'CUMMINS ISMX10',
-        transmision: 'FULLER 10 velocidades',
-        caballaje: '370 HP'
-    },
-    {
-        id: 18,
-        title: 'CAMIÓN GRUA FORD',
-        price: '$580,000 MXN',
-        img: '/images/GRUA.png',
-        category: 'camiones',
-        modelo: 'FORD GRÚA',
-        anio: '1996',
-        motor: 'CATERPILLAR',
-        transmision: 'automática',
-        caballaje: '175 HP'
-    },
-    {
-        id: 19,
-        title: 'CAMIÓN FREIGHTLINER 1997',
-        price: '$480,000 MXN',
-        img: '/images/FREIGH97.png',
-        category: 'camiones',
-        modelo: 'FREIGHTLINER',
-        anio: '1997',
-        motor: 'M11',
-        transmision: 'SUPER 10',
-        caballaje: '330 HP'
-    },
-    {
-        id: 20,
-        title: 'CAMIÓN VACTOR PARA DRENAJE Y ALCANTARILLADO',
-        price: '$900,000 MXN',
-        img: '/images/VECTOR.png',
-        category: 'camiones',
-        modelo: 'STERLING L79500',
-        motor: 'CATERPILLAR C15 BITURBO',
-        transmision: 'FULLER 15 manual',
-        caballaje: '475 HP'
-    },
-    {
-        id: 21,
-        title: 'RETROEXCAVADORA CASE 580E',
-        price: '$350,000 MXN',
-        desc: 'Kit para martillo, 4x4',
-        img: '/images/580E.png',
-        category: 'camiones',
-        modelo: 'CASE 580E'
-    },
-    {
-        id: 22,
-        title: 'RETROEXCAVADORA CASE 580K',
-        price: '$490,000 MXN',
-        desc: 'Kit para martillo, 4x4',
-        img: '/images/580K.png',
-        category: 'camiones',
-        modelo: 'CASE 580K'
-    },
-    {
-        id: 23,
-        title: 'CATERPILLAR',
-        price: '$350,000 MXN',
-        desc: 'Motor caterpillar de 120HP de 6 cilindros, transmisión manual',
-        img: '/images/CATERPILLAR.png',
-        category: 'camiones',
-        modelo: 'MOTOCORFORMADORA',
-        motor: 'Caterpillar',
-        transmision: 'manual',
-        caballaje: '120 HP'
-    },
-    {
-        id: 24,
-        title: 'MINIEXCAVADORA AGT-H12 2023',
-        price: '$140,000 MXN',
-        img: '/images/MINIVER.png',
-        category: 'camiones',
-        modelo: 'AGT-H12',
-        anio: '2023',
-        motor: 'B&S',
-        caballaje: '13.5 HP'
-    },
-    {
-        id: 25,
-        title: 'MINICARGADORA LRT23 2023',
-        price: '$155,000 MXN',
-        img: '/images/MINIROJ.png',
-        category: 'camiones',
-        modelo: 'MINICARGADORA LRT23',
-        anio: '2023',
-        motor: 'R740',
-        caballaje: '13.5 HP'
-    },
-    {
-        id: 26,
-        title: 'CAJA DE 53" 2007',
-        price: '$325,000 MXN',
-        desc: "Marca utility van trailer, suspensión de aire, dimensiones 53'x102' puerta de libro",
-        img: '/images/CAJA.png',
-        category: 'camiones',
-        modelo: 'CAJA 53"',
-        anio: '2007'
-    },
-    {
-        id: 27,
-        title: 'CAJA DE 53" 2003',
-        price: '$195,000 MXN',
-        desc: 'Marca wabash national corporation, Modelo 2003 de 2 EJES',
-        img: '/images/CAJANAR.png',
-        category: 'camiones',
-        modelo: 'CAJA 53"',
-        anio: '2003'
-    },
-    {
-        id: 28,
-        title: 'CAJA DE 48" 2006',
-        price: '$330,000 MXN',
-        desc: 'Marca great dane, 2 ejes, puerta de cortina',
-        img: '/images/CAJA48.png',
-        category: 'camiones',
-        modelo: 'CAJA 48"',
-        anio: '2006'
-    },
-
-    {
-        id: 29,
-        title: 'GRUA FORD F-450',
-        price: '$180,000 MXN',
-        img: '/images/f450.webp',
-        category: 'camiones',
-        modelo: 'FORD SUPER DUTY',
-        anio: '1998',
-        transmision: 'Manual 4 velocidades',
-        motor: 'V8 de GAS',
-        caballaje: '400 HP'
-    },
-
-    {
-        id: 30,
         title: 'CAMIÓN FREIGHTLINER 2007 M2',
         price: '$720,000 MXN',
         img: '/images/M2 FREIGHTLINER.webp',
@@ -357,9 +180,8 @@ export const vehicles: Vehicle[] = [
         transmision: 'EATON 7 FULLER',
         caballaje: '220 HP'
     },
-
     {
-        id: 31,
+        id: 15,
         title: 'INTERNATIONAL PROSTAR',
         price: '$800,000 MXN',
         img: '/images/PROSTARGREEN.webp',
@@ -371,9 +193,183 @@ export const vehicles: Vehicle[] = [
         transmision: '10 VELOCIDADES FULLER',
         caballaje: '400 HP'
     },
+    {
+        id: 16,
+        title: 'CAMIÓN PIPA KENWORTH',
+        price: '$650,000 MXN',
+        img: '/images/T370.png',
+        category: 'camiones',
+        modelo: 'T370',
+        motor: 'CUMMINS PX8',
+        transmision: 'Automática de 6 velocidades',
+        caballaje: '240 HP'
+    },
+    {
+        id: 17,
+        title: 'CAMIÓN PIPA KENWORTH T370',
+        price: '$635,000 MXN',
+        img: '/images/PIPA.png',
+        category: 'camiones',
+        modelo: 'T370',
+        anio: '2008',
+        motor: 'CUMMINS PX8',
+        transmision: 'Automática de 6 velocidades',
+        caballaje: '240 HP'
+    },
+    {
+        id: 18,
+        title: 'CAMIÓN FREIGHTLINER REVOLVEDORA',
+        price: '$500,000 MXN',
+        img: '/images/REVOLVEDORA.png',
+        category: 'camiones',
+        modelo: 'FREIGHTLINER M2 106',
+        anio: '2004',
+        motor: 'CATERPILLAR 3126',
+        transmision: 'manual'
+    },
+    {
+        id: 19,
+        title: 'PLATAFORMA INTERNATIONAL 2016',
+        price: '$650,000 MXN',
+        img: '/images/PLATROJA.png',
+        category: 'camiones',
+        modelo: 'PROSTAR',
+        anio: '2016',
+        motor: 'CUMMINS ISMX10',
+        transmision: 'FULLER 10 velocidades',
+        caballaje: '370 HP'
+    },
+    {
+        id: 20,
+        title: 'CAMIÓN GRUA FORD',
+        price: '$580,000 MXN',
+        img: '/images/GRUA.png',
+        category: 'camiones',
+        modelo: 'FORD GRÚA',
+        anio: '1996',
+        motor: 'CATERPILLAR',
+        transmision: 'automática',
+        caballaje: '175 HP'
+    },
+    {
+        id: 21,
+        title: 'GRUA FORD F-450',
+        price: '$180,000 MXN',
+        img: '/images/f450.webp',
+        category: 'camiones',
+        modelo: 'FORD SUPER DUTY',
+        anio: '1998',
+        transmision: 'Manual 4 velocidades',
+        motor: 'V8 de GAS',
+        caballaje: '400 HP'
+    },
+    {
+        id: 22,
+        title: 'CAMIÓN FREIGHTLINER 1997',
+        price: '$480,000 MXN',
+        img: '/images/FREIGH97.png',
+        category: 'camiones',
+        modelo: 'FREIGHTLINER',
+        anio: '1997',
+        motor: 'M11',
+        transmision: 'SUPER 10',
+        caballaje: '330 HP'
+    },
+    {
+        id: 23,
+        title: 'CAMIÓN VACTOR PARA DRENAJE Y ALCANTARILLADO',
+        price: '$900,000 MXN',
+        img: '/images/VECTOR.png',
+        category: 'camiones',
+        modelo: 'STERLING L79500',
+        motor: 'CATERPILLAR C15 BITURBO',
+        transmision: 'FULLER 15 manual',
+        caballaje: '475 HP'
+    },
+    {
+        id: 24,
+        title: 'RETROEXCAVADORA CASE 580E',
+        price: '$350,000 MXN',
+        desc: 'Kit para martillo, 4x4',
+        img: '/images/580E.png',
+        category: 'camiones',
+        modelo: 'CASE 580E'
+    },
+    {
+        id: 25,
+        title: 'RETROEXCAVADORA CASE 580K',
+        price: '$490,000 MXN',
+        desc: 'Kit para martillo, 4x4',
+        img: '/images/580K.png',
+        category: 'camiones',
+        modelo: 'CASE 580K'
+    },
+    {
+        id: 26,
+        title: 'CATERPILLAR',
+        price: '$350,000 MXN',
+        desc: 'Motor caterpillar de 120HP de 6 cilindros, transmisión manual',
+        img: '/images/CATERPILLAR.png',
+        category: 'camiones',
+        modelo: 'MOTOCORFORMADORA',
+        motor: 'Caterpillar',
+        transmision: 'manual',
+        caballaje: '120 HP'
+    },
+    {
+        id: 27,
+        title: 'MINIEXCAVADORA AGT-H12 2023',
+        price: '$140,000 MXN',
+        img: '/images/MINIVER.png',
+        category: 'camiones',
+        modelo: 'AGT-H12',
+        anio: '2023',
+        motor: 'B&S',
+        caballaje: '13.5 HP'
+    },
+    {
+        id: 28,
+        title: 'MINICARGADORA LRT23 2023',
+        price: '$155,000 MXN',
+        img: '/images/MINIROJ.png',
+        category: 'camiones',
+        modelo: 'MINICARGADORA LRT23',
+        anio: '2023',
+        motor: 'R740',
+        caballaje: '13.5 HP'
+    },
+    {
+        id: 29,
+        title: 'CAJA DE 53" 2007',
+        price: '$325,000 MXN',
+        desc: "Marca utility van trailer, suspensión de aire, dimensiones 53'x102' puerta de libro",
+        img: '/images/CAJA.png',
+        category: 'camiones',
+        modelo: 'CAJA 53"',
+        anio: '2007'
+    },
+    {
+        id: 30,
+        title: 'CAJA DE 53" 2003',
+        price: '$195,000 MXN',
+        desc: 'Marca wabash national corporation, Modelo 2003 de 2 EJES',
+        img: '/images/CAJANAR.png',
+        category: 'camiones',
+        modelo: 'CAJA 53"',
+        anio: '2003'
+    },
+    {
+        id: 31,
+        title: 'CAJA DE 48" 2006',
+        price: '$330,000 MXN',
+        desc: 'Marca great dane, 2 ejes, puerta de cortina',
+        img: '/images/CAJA48.png',
+        category: 'camiones',
+        modelo: 'CAJA 48"',
+        anio: '2006'
+    },
 
-
-    //COCHES 
+    // --- COCHES ---
     {
         id: 32,
         title: 'CHEVROLET BEAT LS 2019',
@@ -433,7 +429,6 @@ export const vehicles: Vehicle[] = [
         id: 37,
         title: 'SUSUKI VITARA 2016',
         price: '$215,000 MXN',
-
         img: '/images/VITALI.png',
         category: 'coches',
         modelo: 'SUSUKI VITARA',
@@ -445,7 +440,6 @@ export const vehicles: Vehicle[] = [
         id: 38,
         title: 'TOYOTA HILUX 2014',
         price: '$250,000 MXN',
-
         img: '/images/HILUX.png',
         category: 'coches',
         modelo: 'TOYOTA HILUX',
@@ -457,7 +451,6 @@ export const vehicles: Vehicle[] = [
         id: 39,
         title: 'NISSAN FRONTIER 2022',
         price: '$600,000 MXN',
-
         img: '/images/FRONTIER.png',
         category: 'coches',
         modelo: 'NISSAN FRONTIER',
@@ -469,7 +462,6 @@ export const vehicles: Vehicle[] = [
         id: 40,
         title: 'KIA RIO',
         price: '$190,000 MXN',
-
         img: '/images/RIO.png',
         category: 'coches',
         modelo: 'KIA RIO EX HB TM 6V',
@@ -479,68 +471,19 @@ export const vehicles: Vehicle[] = [
     },
     {
         id: 41,
-        title: 'KEYSTONE SPRINTER 2004',
-        price: '$200,000 MXN',
-
-        img: '/images/RODANTE1.png',
-        category: 'coches',
-        modelo: 'KEYSTONE SPRINTER',
-        anio: '2004'
-    },
-    {
-        id: 42,
-        title: 'COBRA SIERRA 1988',
-        price: '$150,000 MXN',
-
-        img: '/images/RODANTE2.png',
-        category: 'coches',
-        modelo: 'COBRA SIERRA',
-        anio: '1988'
-    },
-    {
-        id: 43,
-        title: 'SEADOO GTX 6106 2004',
-        price: '$85,000 MXN',
-
-        img: '/images/SEAWOOD.png',
-        category: 'coches',
-        modelo: 'SEADOO GTX 6106',
-        anio: '2004',
-        motor: '2 tiempos'
-    },
-    {
-        id: 44,
-        title: 'SEADOO GTX 2003',
-        price: '$100,000 MXN',
-        img: '/images/SEAWOOD2.png',
-        category: 'coches',
-        modelo: 'SEADOO GTX',
-        anio: '2003',
-        motor: '4 tiempos'
-
-
-    },
-
-    {
-        id: 45,
         title: 'VOLKSWAGEN GOLF',
         price: '$105,000 MXN',
-
         img: '/images/Golf.webp',
         category: 'coches',
         modelo: 'GOLF',
         anio: '1992',
         motor: '4 cilindros, 1.8 litros',
         transmision: 'STANDARD',
-
-
     },
-
     {
-        id: 46,
+        id: 42,
         title: 'CHEVROLET SILVERADO',
         price: '$190,000 MXN',
-
         img: '/images/Silverado.webp',
         category: 'coches',
         modelo: 'SILVERADO 1500',
@@ -548,9 +491,46 @@ export const vehicles: Vehicle[] = [
         motor: 'EcoTec3 5.3L V8, Gasolina',
         transmision: 'Automática'
     },
+    {
+        id: 43,
+        title: 'KEYSTONE SPRINTER 2004',
+        price: '$200,000 MXN',
+        img: '/images/RODANTE1.png',
+        category: 'coches',
+        modelo: 'KEYSTONE SPRINTER',
+        anio: '2004'
+    },
+    {
+        id: 44,
+        title: 'COBRA SIERRA 1988',
+        price: '$150,000 MXN',
+        img: '/images/RODANTE2.png',
+        category: 'coches',
+        modelo: 'COBRA SIERRA',
+        anio: '1988'
+    },
+    {
+        id: 45,
+        title: 'SEADOO GTX 6106 2004',
+        price: '$85,000 MXN',
+        img: '/images/SEAWOOD.png',
+        category: 'coches',
+        modelo: 'SEADOO GTX 6106',
+        anio: '2004',
+        motor: '2 tiempos'
+    },
+    {
+        id: 46,
+        title: 'SEADOO GTX 2003',
+        price: '$100,000 MXN',
+        img: '/images/SEAWOOD2.png',
+        category: 'coches',
+        modelo: 'SEADOO GTX',
+        anio: '2003',
+        motor: '4 tiempos'
+    },
 
-    //CORTES 
-
+    // --- CORTES ---
     {
         id: 47,
         title: 'KENWORTH T680',
@@ -824,7 +804,7 @@ export const vehicles: Vehicle[] = [
         modelo: 'GMC TOPKICK'
     },
 
-    //FABRICA 
+    // --- FABRICA ---
     {
         id: 81,
         title: 'PIPAS DE AGUA',
@@ -849,4 +829,4 @@ export const vehicles: Vehicle[] = [
         category: 'fabrica',
         modelo: 'CAJA DE VOLTEO 14 METROS'
     }
-]
+];
