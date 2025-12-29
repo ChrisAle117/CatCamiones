@@ -7,8 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('camiones');
-  const [navHeight, setNavHeight] = useState<number>(132); 
-  const [tabHeight, setTabHeight] = useState<number>(78);  
+  const [navHeight, setNavHeight] = useState<number>(132);
+  const [tabHeight, setTabHeight] = useState<number>(78);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -27,7 +27,11 @@ export default function App() {
       const nav = document.getElementById('app-navbar');
       if (nav) setNavHeight(nav.offsetHeight);
       const tab = document.getElementById('tab-nav-fixed');
-      if (tab) setTabHeight(tab.offsetHeight);
+      if (tab) {
+        setTabHeight(tab.offsetHeight);
+      } else {
+        setTabHeight(0);
+      }
     };
 
     measure();
@@ -96,7 +100,7 @@ export default function App() {
             exit={{ opacity: 0, x: -100 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <Outlet context={{ activeTab }} />
+            <Outlet context={{ activeTab, navHeight }} />
           </motion.div>
         </AnimatePresence>
       </main>

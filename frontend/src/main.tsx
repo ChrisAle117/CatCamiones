@@ -1,9 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import App from './App.tsx'
-import Inventario from './pages/Inventario.tsx'
-import Contacto from './pages/Contacto.tsx'
+import App from './App'
+import Inventario from './pages/Inventario'
+import VehicleDetails from './pages/VehicleDetails'
+import Contacto from './pages/Contacto'
 import './index.css'
 
 const router = createBrowserRouter([
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Inventario /> },
       { path: ':tab', element: <Inventario /> },
+      { path: 'vehicle/:id', element: <VehicleDetails /> },
       { path: 'contacto', element: <Contacto /> },
     ],
   },

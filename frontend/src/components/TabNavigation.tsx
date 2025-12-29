@@ -24,13 +24,13 @@ export default function TabNavigation({
 }: TabNavigationProps) {
     return (
         <div className={`tab-nav ${className}`}>
-            
+
             <div
                 id="tab-nav-fixed"
-                className="fixed inset-x-0 z-40 bg-white shadow-sm border-t-3 border-[#E11D48]"
+                className="fixed inset-x-0 z-40 bg-white shadow-sm border-t-3 border-[#E11D48] hidden md:block"
                 style={{ top: offsetTopPx }}
             >
-            
+
                 <div className="h-[2px] w-full bg-[#E11D48]" />
 
                 <div className="w-full">
