@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { FaShoppingCart, FaFacebook, FaInstagram, FaTiktok, FaWhatsapp, FaBars, FaTimes, FaPhoneAlt } from 'react-icons/fa';
+import { FaShoppingCart, FaFacebook, FaInstagram, FaTiktok, FaWhatsapp, FaPhoneAlt } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -90,83 +91,109 @@ export default function Navbar() {
                         {/* Hamburger Button (Mobile) */}
                         <button
                             onClick={toggleMenu}
-                            className="text-3xl text-gray-800 md:hidden p-1"
+                            className="text-3xl text-gray-800 md:hidden p-1 relative z-50 w-10 h-10 flex items-center justify-center focus:outline-none"
                             aria-label="Menu"
                         >
-                            {isMenuOpen ? <FaTimes /> : <FaBars />}
+                            <div className="relative w-6 h-5">
+                                <motion.span
+                                    animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+                                    className="absolute block h-0.5 w-6 bg-gray-800 rounded-full"
+                                    transition={{ duration: 0.3 }}
+                                />
+                                <motion.span
+                                    animate={isMenuOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
+                                    className="absolute block h-0.5 w-6 bg-gray-800 rounded-full top-2"
+                                    transition={{ duration: 0.2 }}
+                                />
+                                <motion.span
+                                    animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+                                    className="absolute block h-0.5 w-6 bg-gray-800 rounded-full top-4"
+                                    transition={{ duration: 0.3 }}
+                                />
+                            </div>
                         </button>
                     </div>
                 </div>
             </nav>
 
             {/* Mobile Menu Overlay */}
-            {isMenuOpen && (
-                <div className="md:hidden absolute top-full left-0 w-full bg-[#FBCC13] shadow-2xl border-t border-yellow-500 z-[100]">
-                    <div className="flex flex-col p-6 space-y-6">
-                        {/* Store Section Mobile */}
-                        <div className="space-y-3">
-                            <p className="text-center font-bold text-gray-800 border-b border-yellow-600 pb-2">
-                                RECAMBIOS Y REFACCIONES
-                            </p>
-                            <a
-                                href="https://refaccioneselboom.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-[#C71940] text-white font-bold py-4 px-6 rounded-lg shadow-lg text-center flex items-center justify-center space-x-3 text-lg"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                <FaShoppingCart />
-                                <span>VISITA NUESTRA TIENDA</span>
-                            </a>
-                        </div>
-
-                        {/* Categories Mobile */}
-                        <div className="space-y-3">
-                            <p className="text-center font-bold text-gray-800 border-b border-yellow-600 pb-2">
-                                NUESTRO CATÁLOGO
-                            </p>
-                            <div className="grid grid-cols-2 gap-3">
-                                {menuItems.map((item) => (
-                                    <Link
-                                        key={item.id}
-                                        to={item.path}
-                                        className={`py-4 px-4 rounded-lg text-center font-bold transition-all text-sm ${location.pathname.includes(item.id)
-                                            ? 'bg-white text-[#C71940] shadow-inner'
-                                            : 'bg-yellow-400 text-gray-800 hover:bg-yellow-200'
-                                            }`}
-                                        onClick={() => setIsMenuOpen(false)}
-                                    >
-                                        {item.label}
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Socials & Contact Mobile */}
-                        <div className="space-y-4 pt-4">
-                            <div className="flex justify-center space-x-8">
-                                {socialLinks.map((social, idx) => (
-                                    <a
-                                        key={idx}
-                                        href={social.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`text-4xl ${social.color} hover:scale-110 transition-transform`}
-                                    >
-                                        {social.icon}
-                                    </a>
-                                ))}
-                            </div>
-                            <div className="text-center text-gray-700 text-sm font-medium">
-                                <p className="flex items-center justify-center">
-                                    <FaPhoneAlt className="mr-2 text-red-600" />
-                                    777-181-0370
+            <AnimatePresence>
+                {isMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        className="md:hidden absolute top-full left-0 w-full bg-[#FBCC13] shadow-2xl border-t border-yellow-500 z-[100] overflow-hidden"
+                    >
+                        <div className="flex flex-col p-6 space-y-6">
+                            {/* Store Section Mobile */}
+                            <div className="space-y-3">
+                                <p className="text-center font-bold text-gray-800 border-b border-yellow-600 pb-2">
+                                    RECAMBIOS Y REFACCIONES
                                 </p>
+                                <a
+                                    href="https://refaccioneselboom.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-[#C71940] text-white font-bold py-4 px-6 rounded-lg shadow-lg text-center flex items-center justify-center space-x-3 text-lg"
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    <FaShoppingCart />
+                                    <span>VISITA NUESTRA TIENDA</span>
+                                </a>
+                            </div>
+
+                            {/* Categories Mobile */}
+                            <div className="space-y-3">
+                                <p className="text-center font-bold text-gray-800 border-b border-yellow-600 pb-2">
+                                    NUESTRO CATÁLOGO
+                                </p>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {menuItems.map((item) => (
+                                        <Link
+                                            key={item.id}
+                                            to={item.path}
+                                            className={`py-4 px-4 rounded-lg text-center font-bold transition-all text-sm ${location.pathname.includes(item.id)
+                                                ? 'bg-white text-[#C71940] shadow-inner'
+                                                : 'bg-yellow-400 text-gray-800 hover:bg-yellow-200'
+                                                }`}
+                                            onClick={() => setIsMenuOpen(false)}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Socials & Contact Mobile */}
+                            <div className="space-y-4 pt-4">
+                                <div className="flex justify-center space-x-8">
+                                    {socialLinks.map((social, idx) => (
+                                        <motion.a
+                                            key={idx}
+                                            href={social.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            whileHover={{ scale: 1.1 }}
+                                            whileTap={{ scale: 0.9 }}
+                                            className={`text-4xl ${social.color}`}
+                                        >
+                                            {social.icon}
+                                        </motion.a>
+                                    ))}
+                                </div>
+                                <div className="text-center text-gray-700 text-sm font-medium">
+                                    <p className="flex items-center justify-center">
+                                        <FaPhoneAlt className="mr-2 text-red-600" />
+                                        777-181-0370
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </header>
     );
 }

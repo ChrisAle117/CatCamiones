@@ -152,7 +152,7 @@ export default function VehicleDetails() {
                                 <span className="text-black">Contactar por WhatsApp</span>
                             </a>
                             <p className="text-center text-sm text-gray-500">
-                                Disponibilidad inmediata · Envío a todo México
+                                Disponibilidad inmediata
                             </p>
                         </div>
                     </div>
