@@ -1,7 +1,9 @@
 import { useParams, useNavigate, Link, useOutletContext } from 'react-router-dom';
 import { useState, useMemo, useEffect } from 'react';
 import { vehicles } from '../data/vehicles';
-import { MdOutlineWhatsapp, MdArrowBack } from 'react-icons/md';
+import { MdOutlineWhatsapp, MdArrowBack, MdCalendarToday, MdSettings, MdBolt, MdInfoOutline } from 'react-icons/md';
+import { HiOutlineTag } from 'react-icons/hi';
+import { GiGearStick } from 'react-icons/gi';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function VehicleDetails() {
@@ -45,11 +47,11 @@ export default function VehicleDetails() {
     const waHref = `https://wa.me/+5217771810370?text=${encodeURIComponent(waText)}`;
 
     const specs = [
-        { label: 'MODELO', value: vehicle.modelo },
-        { label: 'AÑO', value: vehicle.anio },
-        { label: 'MOTOR', value: vehicle.motor },
-        { label: 'TRANSMISIÓN', value: vehicle.transmision },
-        { label: 'CABALLAJE', value: vehicle.caballaje },
+        { label: 'MODELO', value: vehicle.modelo, icon: <HiOutlineTag className="text-blue-500" /> },
+        { label: 'AÑO', value: vehicle.anio, icon: <MdCalendarToday className="text-red-500" /> },
+        { label: 'MOTOR', value: vehicle.motor, icon: <MdSettings className="text-gray-600" /> },
+        { label: 'TRANSMISIÓN', value: vehicle.transmision, icon: <GiGearStick className="text-orange-500" /> },
+        { label: 'CABALLAJE', value: vehicle.caballaje, icon: <MdBolt className="text-yellow-500" /> },
     ].filter(s => s.value);
 
     return (
@@ -68,7 +70,7 @@ export default function VehicleDetails() {
                         Regresar
                     </button>
                     <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                        {vehicle.category} / ID: {vehicle.id}
+                        {vehicle.category}
                     </div>
                 </div>
             </div>
@@ -115,30 +117,46 @@ export default function VehicleDetails() {
                     </div>
 
                     {/* Right Side: Details */}
-                    <div className="flex flex-col h-full">
-                        <div className="mb-8">
+                    <div className="flex flex-col h-full space-y-8">
+                        <div>
                             <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
                                 {cleanTitle}
                             </h1>
-                            <p className="text-gray-600 text-lg leading-relaxed italic">
-                                "{vehicle.desc || 'Consulte por las especificaciones completas de este vehículo.'}"
-                            </p>
+                            <div className="flex items-center gap-2 text-gray-500 font-bold text-sm uppercase tracking-wider mb-6">
+                                <span className="bg-gray-100 px-3 py-1 rounded-full">{vehicle.category}</span>
+                            </div>
                         </div>
 
                         {/* Technical Specs Table */}
-                        <div className="bg-gray-50 rounded-3xl p-6 mb-8 border border-gray-100">
-                            <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 px-2">
+                        <div className="bg-gray-50 rounded-3xl p-6 border border-gray-100 shadow-sm">
+                            <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 px-2 flex items-center gap-2">
+                                <MdInfoOutline size={18} />
                                 Características Técnicas
                             </h2>
                             <div className="grid grid-cols-1 gap-1">
                                 {specs.map((spec, i) => (
                                     <div key={i} className="flex justify-between items-center p-3 rounded-xl hover:bg-white transition-colors group">
-                                        <span className="text-gray-500 font-medium">{spec.label}</span>
-                                        <span className="text-gray-900 font-bold text-right">{spec.value}</span>
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-xl">{spec.icon}</span>
+                                            <span className="text-gray-500 font-medium text-sm">{spec.label}</span>
+                                        </div>
+                                        <span className="text-gray-900 font-bold text-right text-sm md:text-base">{spec.value}</span>
                                     </div>
                                 ))}
                             </div>
                         </div>
+
+                        {/* Description Section */}
+                        {vehicle.desc && (
+                            <div className="bg-blue-50/30 rounded-3xl p-6 border border-blue-100/50">
+                                <h2 className="text-sm font-bold text-blue-600/60 uppercase tracking-wider mb-3 px-2">
+                                    Información Adicional
+                                </h2>
+                                <p className="text-gray-700 text-lg leading-relaxed font-medium px-2">
+                                    {vehicle.desc}
+                                </p>
+                            </div>
+                        )}
 
                         {/* Contact CTA */}
                         <div className="mt-auto space-y-4">
