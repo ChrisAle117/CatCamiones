@@ -1,7 +1,7 @@
 import { useParams, useNavigate, Link, useOutletContext } from 'react-router-dom';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { vehicles } from '../data/vehicles';
-import { MdOutlineWhatsapp, MdArrowBack, MdCalendarToday, MdSettings, MdBolt, MdInfoOutline } from 'react-icons/md';
+import { MdOutlineWhatsapp, MdArrowBack, MdCalendarToday, MdSettings, MdBolt, MdInfoOutline, MdChevronLeft, MdChevronRight, MdClose, MdFullscreen, MdZoomIn } from 'react-icons/md';
 import { HiOutlineTag } from 'react-icons/hi';
 import { GiGearStick } from 'react-icons/gi';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,7 +10,10 @@ export default function VehicleDetails() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const [activeImage, setActiveImage] = useState(0);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+    const [zoom, setZoom] = useState(false);
     const { navHeight } = useOutletContext<{ navHeight: number }>();
+    const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
     const vehicle = useMemo(() => {
         return vehicles.find(v => v.id === Number(id));
@@ -27,6 +30,44 @@ export default function VehicleDetails() {
         window.scrollTo(0, 0);
         setActiveImage(0);
     }, [id]);
+
+    const nextImage = () => {
+        if (!vehicle) return;
+        setActiveImage((prev) => (prev + 1) % vehicle.images.length);
+    };
+
+    const prevImage = () => {
+        if (!vehicle) return;
+        setActiveImage((prev) => (prev - 1 + vehicle.images.length) % vehicle.images.length);
+    };
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (isLightboxOpen) {
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'Escape') setIsLightboxOpen(false);
+            } else {
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isLightboxOpen, vehicle]);
+
+    useEffect(() => {
+        if (thumbnailContainerRef.current) {
+            const activeButton = thumbnailContainerRef.current.children[activeImage] as HTMLElement;
+            if (activeButton) {
+                activeButton.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center'
+                });
+            }
+        }
+    }, [activeImage]);
 
     if (!vehicle) {
         return (
@@ -66,7 +107,7 @@ export default function VehicleDetails() {
                         onClick={() => navigate(-1)}
                         className="flex items-center gap-2 text-gray-600 hover:text-[#006CFA] transition-colors font-medium"
                     >
-                        <MdArrowBack size={20} />
+                        <MdArrowBack size={24} />
                         Regresar
                     </button>
                     <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">
@@ -80,38 +121,93 @@ export default function VehicleDetails() {
 
                     {/* Left Side: Images */}
                     <div className="space-y-4">
-                        <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 shadow-xl group">
+                        <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 shadow-xl group cursor-zoom-in"
+                            onClick={() => setIsLightboxOpen(true)}
+                        >
                             <AnimatePresence mode="wait">
                                 <motion.img
                                     key={activeImage}
                                     src={vehicle.images[activeImage]}
                                     alt={cleanTitle}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
                                     transition={{ duration: 0.3 }}
                                     className="w-full h-full object-contain"
                                 />
                             </AnimatePresence>
 
+                            {/* Navigation Arrows */}
+                            {vehicle.images.length > 1 && (
+                                <>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg text-gray-800 transition-all opacity-0 group-hover:opacity-100 hidden md:flex items-center justify-center z-10"
+                                    >
+                                        <MdChevronLeft size={48} />
+                                    </button>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg text-gray-800 transition-all opacity-0 group-hover:opacity-100 hidden md:flex items-center justify-center z-10"
+                                    >
+                                        <MdChevronRight size={48} />
+                                    </button>
+                                </>
+                            )}
+
+                            {/* Fullscreen Button */}
+                            <div className="absolute bottom-4 right-4 bg-black/40 backdrop-blur-md text-white p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hidden md:block">
+                                <MdFullscreen size={28} />
+                            </div>
+
                             <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-[#006CFA] text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl font-bold text-lg sm:text-xl shadow-lg whitespace-nowrap z-10">
                                 {vehicle.price}
                             </div>
+
+                            {/* Image Counter Overlay */}
+                            {vehicle.images.length > 1 && (
+                                <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold border border-white/20 z-10">
+                                    {activeImage + 1} / {vehicle.images.length}
+                                </div>
+                            )}
                         </div>
 
                         {/* Thumbnails */}
                         {vehicle.images.length > 1 && (
-                            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                                {vehicle.images.map((img, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setActiveImage(idx)}
-                                        className={`relative w-24 aspect-square rounded-xl overflow-hidden border-2 transition-all shrink-0 ${activeImage === idx ? 'border-[#006CFA] ring-2 ring-blue-100' : 'border-transparent hover:border-gray-300'
-                                            }`}
-                                    >
-                                        <img src={img} alt={`Vista ${idx + 1}`} className="w-full h-full object-cover" />
-                                    </button>
-                                ))}
+                            <div className="relative group/thumbs">
+                                <div
+                                    ref={thumbnailContainerRef}
+                                    className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide px-2 pt-2"
+                                    style={{
+                                        maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)',
+                                        WebkitMaskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)'
+                                    }}
+                                >
+                                    {vehicle.images.map((img, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setActiveImage(idx)}
+                                            className={`relative w-24 aspect-square rounded-xl overflow-hidden border-2 transition-all shrink-0 ${activeImage === idx ? 'border-[#006CFA] ring-4 ring-blue-100 scale-105 z-10' : 'border-transparent hover:border-gray-300 opacity-70 hover:opacity-100'
+                                                }`}
+                                        >
+                                            <img src={img} alt={`Vista ${idx + 1}`} className="w-full h-full object-cover" />
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Scroll Arrows for Thumbnails */}
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                                    className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-full bg-gradient-to-r from-white via-white/80 to-transparent flex items-center justify-start pl-1 opacity-100 md:opacity-0 group-hover/thumbs:opacity-100 transition-opacity z-20"
+                                >
+                                    <MdChevronLeft className="text-[#006CFA]" size={44} />
+                                </button>
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                                    className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-full bg-gradient-to-l from-white via-white/80 to-transparent flex items-center justify-end pr-1 opacity-100 md:opacity-0 group-hover/thumbs:opacity-100 transition-opacity z-20"
+                                >
+                                    <MdChevronRight className="text-[#006CFA]" size={44} />
+                                </button>
                             </div>
                         )}
                     </div>
@@ -130,15 +226,15 @@ export default function VehicleDetails() {
                         {/* Technical Specs Table */}
                         <div className="bg-gray-50 rounded-3xl p-6 border border-gray-100 shadow-sm">
                             <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 px-2 flex items-center gap-2">
-                                <MdInfoOutline size={18} />
+                                <MdInfoOutline size={22} />
                                 Características Técnicas
                             </h2>
                             <div className="grid grid-cols-1 gap-1">
                                 {specs.map((spec, i) => (
                                     <div key={i} className="flex justify-between items-center p-3 rounded-xl hover:bg-white transition-colors group">
                                         <div className="flex items-center gap-3">
-                                            <span className="text-xl">{spec.icon}</span>
-                                            <span className="text-gray-500 font-medium text-sm">{spec.label}</span>
+                                            <span className="text-2xl">{spec.icon}</span>
+                                            <span className="text-gray-500 font-bold text-base">{spec.label}</span>
                                         </div>
                                         <span className="text-gray-900 font-bold text-right text-sm md:text-base">{spec.value}</span>
                                     </div>
@@ -164,10 +260,10 @@ export default function VehicleDetails() {
                                 href={waHref}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center justify-center gap-3 w-full py-5 bg-[#FBCC13] text-[#E7000B] rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all hover:scale-[1.01] active:scale-[0.99]"
+                                className="flex items-center justify-center gap-3 w-full py-5 bg-[#FBCC13] text-[#E7000B] rounded-2xl font-bold text-xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.01] active:scale-[0.99]"
                             >
-                                <MdOutlineWhatsapp size={28} className="text-black" />
-                                <span className="text-black">Contactar por WhatsApp</span>
+                                <MdOutlineWhatsapp size={32} className="text-black" />
+                                <span className="text-black text-xl">Contactar por WhatsApp</span>
                             </a>
                             <p className="text-center text-sm text-gray-500">
                                 Disponibilidad inmediata
@@ -209,6 +305,89 @@ export default function VehicleDetails() {
                     </div>
                 )}
             </div>
+
+            {/* Lightbox Modal */}
+            <AnimatePresence>
+                {isLightboxOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center"
+                    >
+                        {/* Close Button */}
+                        <button
+                            onClick={() => { setIsLightboxOpen(false); setZoom(false); }}
+                            className="absolute top-6 right-6 text-white bg-white/10 hover:bg-white/20 p-4 rounded-full transition-colors z-50"
+                        >
+                            <MdClose size={40} />
+                        </button>
+
+                        {/* Image Container */}
+                        <div className="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-12 overflow-hidden">
+                            <motion.img
+                                key={activeImage}
+                                src={vehicle.images[activeImage]}
+                                alt={cleanTitle}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{
+                                    opacity: 1,
+                                    scale: zoom ? 1.5 : 1,
+                                    cursor: zoom ? 'zoom-out' : 'zoom-in'
+                                }}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                onClick={() => setZoom(!zoom)}
+                                className="max-w-full max-h-full object-contain select-none"
+                            />
+
+                            {/* Lightbox Navigation */}
+                            {vehicle.images.length > 1 && !zoom && (
+                                <>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                                        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-5 rounded-full text-white transition-all backdrop-blur-md"
+                                    >
+                                        <MdChevronLeft size={56} />
+                                    </button>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                                        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-5 rounded-full text-white transition-all backdrop-blur-md"
+                                    >
+                                        <MdChevronRight size={56} />
+                                    </button>
+                                </>
+                            )}
+                        </div>
+
+                        {/* Lightbox Footer/Counter */}
+                        {!zoom && (
+                            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+                                <div className="text-white bg-white/10 px-6 py-2 rounded-full font-bold text-lg backdrop-blur-md">
+                                    {activeImage + 1} / {vehicle.images.length}
+                                </div>
+                                <div className="flex gap-3 overflow-x-auto max-w-[90vw] scrollbar-hide pb-4">
+                                    {vehicle.images.map((img, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setActiveImage(idx)}
+                                            className={`relative w-24 md:w-32 aspect-square rounded-xl overflow-hidden border-4 transition-all shrink-0 ${activeImage === idx ? 'border-white scale-110 shadow-2xl' : 'border-transparent opacity-50 hover:opacity-100'
+                                                }`}
+                                        >
+                                            <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Zoom Hint */}
+                        <div className="absolute bottom-4 left-4 text-white/70 text-sm flex items-center gap-2 font-bold bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-md border border-white/10">
+                            <MdZoomIn size={20} />
+                            {zoom ? 'Click para alejar' : 'Click para ampliar'}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
