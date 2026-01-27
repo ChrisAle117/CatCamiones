@@ -273,19 +273,7 @@ export const vehicles: Vehicle[] = [
         transmision: 'automática',
         caballaje: '175 HP'
     },
-    {
-        id: 21,
-        title: 'GRUA FORD F-450',
-        price: '$180,000 MXN',
-        img: '/images/f450.webp',
-        images: ['/images/f450.jpg', '/images/grua (1).webp', '/images/grua (2).webp', '/images/grua (3).webp', '/images/grua (4).webp', '/images/grua (5).webp'],
-        category: 'camiones',
-        modelo: 'FORD SUPER DUTY',
-        anio: '1998',
-        transmision: 'Manual 4 velocidades',
-        motor: 'V8 de GAS',
-        caballaje: '400 HP'
-    },
+
     {
         id: 22,
         title: 'CAMIÓN FREIGHTLINER 1997',
@@ -514,7 +502,7 @@ export const vehicles: Vehicle[] = [
     {
         id: 41,
         title: 'VOLKSWAGEN GOLF',
-        price: '$105,000 MXN',
+        price: '$115,000 MXN',
         img: '/images/Golf.webp',
         images: ['/images/Golf.webp', '/images/golf (1).webp', '/images/golf (2).webp', '/images/golf (3).webp', '/images/golf (4).webp', '/images/golf (5).webp', '/images/golf (6).webp', '/images/golf (7).webp'],
         category: 'coches',
