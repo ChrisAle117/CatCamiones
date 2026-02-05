@@ -392,6 +392,18 @@ export const vehicles: Vehicle[] = [
 
     // --- COCHES ---
     {
+        id: 21,
+        title: 'VOLKSWAGEN JETTA',
+        price: '$195,000 MXN',
+        img: '/images/JETTA.webp',
+        images: ['/images/JETTA (1).webp', '/images/JETTA (2).webp', '/images/JETTA (3).webp', '/images/JETTA (4).webp', '/images/JETTA (5).webp', '/images/JETTA (6).webp', '/images/JETTA (7).webp', '/images/JETTA (8).webp', '/images/JETTA (9).webp', '/images/JETTA (10).webp', '/images/JETTA (11).webp', '/images/JETTA (12).webp', '/images/JETTA (13).webp', '/images/JETTA (14).webp', '/images/JETTA (15).webp', '/images/JETTA (16).webp', '/images/JETTA (17).webp'],
+        category: 'coches',
+        modelo: 'VOLKSWAGEN JETTA',
+        anio: '2016',
+        motor: '2.5L',
+        transmision: 'manual'
+    },
+    {
         id: 32,
         title: 'CHEVROLET BEAT LS 2019',
         price: '$120,000 MXN',
