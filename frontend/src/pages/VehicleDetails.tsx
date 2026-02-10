@@ -106,6 +106,7 @@ export default function VehicleDetails() {
                     <button
                         onClick={() => navigate(-1)}
                         className="flex items-center gap-2 text-gray-600 hover:text-[#006CFA] transition-colors font-medium"
+                        aria-label="Regresar al listado"
                     >
                         <MdArrowBack size={24} />
                         Regresar
@@ -143,12 +144,14 @@ export default function VehicleDetails() {
                                     <button
                                         onClick={(e) => { e.stopPropagation(); prevImage(); }}
                                         className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg text-gray-800 transition-all opacity-0 group-hover:opacity-100 hidden md:flex items-center justify-center z-10"
+                                        aria-label="Imagen anterior"
                                     >
                                         <MdChevronLeft size={48} />
                                     </button>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); nextImage(); }}
                                         className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg text-gray-800 transition-all opacity-0 group-hover:opacity-100 hidden md:flex items-center justify-center z-10"
+                                        aria-label="Siguiente imagen"
                                     >
                                         <MdChevronRight size={48} />
                                     </button>
@@ -189,8 +192,9 @@ export default function VehicleDetails() {
                                             onClick={() => setActiveImage(idx)}
                                             className={`relative w-24 aspect-square rounded-xl overflow-hidden border-2 transition-all shrink-0 ${activeImage === idx ? 'border-[#006CFA] ring-4 ring-blue-100 scale-105 z-10' : 'border-transparent hover:border-gray-300 opacity-70 hover:opacity-100'
                                                 }`}
+                                            aria-label={`Ver imagen ${idx + 1}`}
                                         >
-                                            <img src={img} alt={`Vista ${idx + 1}`} className="w-full h-full object-cover" />
+                                            <img src={img} alt={`Vista ${idx + 1}`} width="96" height="96" className="w-full h-full object-cover" loading="lazy" />
                                         </button>
                                     ))}
                                 </div>
@@ -199,12 +203,14 @@ export default function VehicleDetails() {
                                 <button
                                     onClick={(e) => { e.stopPropagation(); prevImage(); }}
                                     className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-full bg-gradient-to-r from-white via-white/80 to-transparent flex items-center justify-start pl-1 opacity-100 md:opacity-0 group-hover/thumbs:opacity-100 transition-opacity z-20"
+                                    aria-label="Anterior galería"
                                 >
                                     <MdChevronLeft className="text-[#006CFA]" size={44} />
                                 </button>
                                 <button
                                     onClick={(e) => { e.stopPropagation(); nextImage(); }}
                                     className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-full bg-gradient-to-l from-white via-white/80 to-transparent flex items-center justify-end pr-1 opacity-100 md:opacity-0 group-hover/thumbs:opacity-100 transition-opacity z-20"
+                                    aria-label="Siguiente galería"
                                 >
                                     <MdChevronRight className="text-[#006CFA]" size={44} />
                                 </button>
@@ -388,6 +394,6 @@ export default function VehicleDetails() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </div >
     );
 }

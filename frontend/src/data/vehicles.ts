@@ -16,6 +16,18 @@ export type Vehicle = {
 export const vehicles: Vehicle[] = [
     // --- CAMIONES ---
     {
+        id: 84,
+        title: 'VOLTEO KENWORTH T370 2008',
+        price: '$750,000 MXN',
+        desc: 'Caja de 7m, Motor Cummins PX8 , 7 velocidades , 240 caballos , Suspensión de aire, Diferenciasl de 42 mil lb , freno de motor.',
+        img: '/images/T3702008.webp',
+        images: ['/images/T3702008.webp', '/images/T3702008 (1).webp', '/images/T3702008 (2).webp', '/images/T3702008 (3).webp', '/images/T3702008 (4).webp', '/images/T3702008 (5).webp', '/images/T3702008 (6).webp', '/images/T3702008 (7).webp'],
+        category: 'camiones',
+        modelo: 'KENWORTH T370',
+        anio: '2008'
+    },
+
+    {
         id: 1,
         title: 'FREIGHTLINER M2 2016',
         price: '$550,000 MXN',
@@ -389,6 +401,9 @@ export const vehicles: Vehicle[] = [
         modelo: 'CAJA 48"',
         anio: '2006'
     },
+
+
+
 
     // --- COCHES ---
     {

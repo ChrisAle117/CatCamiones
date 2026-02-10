@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://camiones.refaccioneselboom.com/sitemap.xml
