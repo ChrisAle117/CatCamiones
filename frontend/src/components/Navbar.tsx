@@ -53,6 +53,7 @@ export default function Navbar() {
                                 href={social.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                aria-label={social.label}
                                 className="flex items-center group relative cursor-pointer"
                                 initial="initial"
                                 whileHover="hover"
@@ -62,6 +63,7 @@ export default function Navbar() {
                                 >
                                     {social.icon}
                                 </motion.span>
+                                <span className="sr-only">Visítanos en {social.label}</span>
 
                                 <motion.div
                                     variants={{
@@ -81,13 +83,16 @@ export default function Navbar() {
 
                     {/* Center Column - Logo */}
                     <div className="flex md:justify-center items-center">
-                        <a href="https://camiones.refaccioneselboom.com/" aria-label="Ir a la página principal">
+                        <Link to="/" aria-label="Ir a la página principal">
+                            <span className="sr-only">Ir a la página de inicio de El Boom Tractopartes</span>
                             <img
                                 src="/images/logotipo.png"
-                                alt="El Boom Tractopartes"
+                                alt="El Boom Tractopartes - Venta de Camiones y Tractopartes"
+                                width="200"
+                                height="80"
                                 className="h-10 sm:h-14 md:h-16 lg:h-20 w-auto transition-transform duration-300 ease-out hover:scale-105 active:scale-95"
                             />
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Right Column - Actions */}
@@ -213,7 +218,9 @@ export default function Navbar() {
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
                                             className={`text-4xl ${social.color}`}
+                                            aria-label={`Seguir en ${social.label}`}
                                         >
+                                            <span className="sr-only">Nuestra página de {social.label}</span>
                                             {social.icon}
                                         </motion.a>
                                     ))}

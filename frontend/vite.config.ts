@@ -9,14 +9,7 @@ export default defineConfig({
     port: 5173,
     // permite dominios externos (ngrok)
     allowedHosts: [
-      '.ngrok-free.app',   
-      '71bc93aa026a.ngrok-free.app' 
+      '.ngrok-free.app',
     ],
-    
-    hmr: {
-      host: '71bc93aa026a.ngrok-free.app', 
-      protocol: 'wss',      
-      clientPort: 443
-    }
   }
 })

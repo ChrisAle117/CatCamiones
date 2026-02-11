@@ -10,6 +10,7 @@ type Props = {
     price: string;
     desc?: string;
     img?: string;
+    images?: string[];
     modelo?: string;
     anio?: string;
     motor?: string;
@@ -17,7 +18,7 @@ type Props = {
     caballaje?: string;
 };
 
-export default function VehicleCard({ id, title, price, desc, img, modelo, anio, motor, transmision, caballaje }: Props) {
+export default function VehicleCard({ id, title, price, desc, img, images, modelo, anio, motor, transmision, caballaje }: Props) {
     const [loaded, setLoaded] = useState(false);
 
     // Sanea título por si viene con '|' accidental al inicio
@@ -31,7 +32,8 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
         : "/images/logotipo.png";
 
     const candidates = useMemo(() => {
-        const raw = (img || "").trim();
+        const firstImg = (images && images.length > 0) ? images[0] : img;
+        const raw = (firstImg || "").trim();
         if (!raw) return [] as string[];
 
         const hasExt = /\.[a-z0-9]+$/i.test(raw);
@@ -46,14 +48,30 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
             return [asWebp(raw), raw, swap(raw)];
         }
         return [`${raw}.webp`, `${raw}.png`, `${raw}.jpg`];
-    }, [img]);
+    }, [img, images]);
 
     const [currentSrc, setCurrentSrc] = useState<string>(candidates[0] || logoSrc);
 
+    // Reset state ONLY if the vehicle identity or primary image prop changes
+    const primaryProp = (images && images.length > 0) ? images[0] : img;
     useEffect(() => {
         setLoaded(false);
         setCurrentSrc(candidates[0] || logoSrc);
-    }, [candidates, logoSrc]);
+    }, [id, primaryProp]); // Using 'id' for stability
+
+    // Fail-safe for cached images: check if complete immediately
+    useEffect(() => {
+        const checkComplete = () => {
+            const imgElement = document.querySelector(`img[src="${currentSrc}"]`) as HTMLImageElement;
+            if (imgElement && imgElement.complete) {
+                setLoaded(true);
+            }
+        };
+        checkComplete();
+        // Also check shortly after 
+        const timer = setTimeout(checkComplete, 50);
+        return () => clearTimeout(timer);
+    }, [currentSrc]);
 
     const specs = useMemo(() => {
         const s: Record<string, string | undefined> = {};
@@ -105,32 +123,40 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
         <article
             className="group relative h-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg focus-within:shadow-lg focus-within:ring-2 focus-within:ring-blue-500/30 w-full max-w-sm mx-auto sm:max-w-none flex flex-col"
         >
-            <Link to={`/vehicle/${id}`} className="flex flex-col flex-1 h-full">
-                {/* Media */}
-                <div className="relative aspect-[4/3] w-full bg-gradient-to-b from-gray-50 to-white shrink-0">
-                    {!loaded && (
-                        <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100" />
-                    )}
-
+            <Link to={`/vehicle/${id}`} className="flex flex-col flex-1 h-full" aria-label={`Ver detalles de ${cleanTitle}`}>
+                <span className="sr-only">Detalles del vehículo: {cleanTitle}. Precio: {price}</span>
+                {/* Media Container with Background Skeleton */}
+                <div
+                    className={`relative aspect-[4/3] w-full shrink-0 overflow-hidden ${!loaded ? 'bg-gray-100 animate-pulse' : 'bg-gray-50'}`}
+                >
                     {currentSrc ? (
                         <img
                             src={currentSrc}
                             alt={cleanTitle}
-                            loading="lazy"
+                            width="400"
+                            height="300"
+                            loading="eager" // Better for LCP and stability
                             decoding="async"
                             draggable={false}
-                            onLoad={() => setLoaded(true)}
+                            onLoad={(e) => {
+                                const imgTarget = e.currentTarget;
+                                if (imgTarget.complete) {
+                                    setLoaded(true);
+                                }
+                            }}
                             onError={() => {
                                 const idx = candidates.indexOf(currentSrc);
                                 const next = idx >= 0 && idx < candidates.length - 1 ? candidates[idx + 1] : null;
                                 setCurrentSrc(next || logoSrc);
                             }}
-                            className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+                            className={`h-full w-full object-contain transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
                         />
                     ) : (
                         <img
                             src={logoSrc}
-                            alt="Sin imagen"
+                            alt="Logotipo El Boom"
+                            width="400"
+                            height="300"
                             loading="lazy"
                             decoding="async"
                             onLoad={() => setLoaded(true)}
@@ -180,17 +206,21 @@ export default function VehicleCard({ id, title, price, desc, img, modelo, anio,
             <div className="px-3 sm:px-4 md:px-5 pb-4 grid grid-cols-2 gap-2">
                 <Link
                     to={`/vehicle/${id}`}
+                    aria-label={`Más información sobre ${cleanTitle}`}
                     className="flex items-center justify-center rounded-xl bg-gray-100 px-2 py-2 text-xs sm:text-sm font-semibold text-gray-900 hover:bg-gray-200 transition-all shadow-sm ring-1 ring-black/5"
                 >
+                    <span className="sr-only">Ver detalles del vehículo </span>
                     Más información
                 </Link>
                 <a
                     href={waHref}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`Contactar por WhatsApp para ${cleanTitle}`}
                     className="group/cta inline-flex items-center justify-center gap-1 rounded-xl bg-[#FBCC13] px-2 py-2 text-xs sm:text-sm font-semibold text-black hover:brightness-95 transition-all shadow-sm ring-1 ring-black/5"
                 >
                     <MdOutlineWhatsapp size={18} className="text-black" />
+                    <span className="sr-only">Contactar por WhatsApp sobre {cleanTitle}</span>
                     <span>WhatsApp</span>
                 </a>
             </div>

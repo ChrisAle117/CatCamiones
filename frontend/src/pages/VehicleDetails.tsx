@@ -1,10 +1,16 @@
 import { useParams, useNavigate, Link, useOutletContext } from 'react-router-dom';
 import { useState, useMemo, useEffect, useRef } from 'react';
-import { vehicles } from '../data/vehicles';
+import type { Vehicle } from '../data/vehicles';
 import { MdOutlineWhatsapp, MdArrowBack, MdCalendarToday, MdSettings, MdBolt, MdInfoOutline, MdChevronLeft, MdChevronRight, MdClose, MdFullscreen, MdZoomIn } from 'react-icons/md';
 import { HiOutlineTag } from 'react-icons/hi';
 import { GiGearStick } from 'react-icons/gi';
 import { motion, AnimatePresence } from 'framer-motion';
+
+type ContextType = {
+    vehicles: Vehicle[];
+    isLoading: boolean;
+    navHeight: number;
+}
 
 export default function VehicleDetails() {
     const { id } = useParams<{ id: string }>();
@@ -12,19 +18,19 @@ export default function VehicleDetails() {
     const [activeImage, setActiveImage] = useState(0);
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [zoom, setZoom] = useState(false);
-    const { navHeight } = useOutletContext<{ navHeight: number }>();
+    const { navHeight, vehicles, isLoading } = useOutletContext<ContextType>();
     const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
     const vehicle = useMemo(() => {
-        return vehicles.find(v => v.id === Number(id));
-    }, [id]);
+        return (vehicles || []).find(v => v.id === Number(id));
+    }, [id, vehicles]);
 
     const relatedVehicles = useMemo(() => {
-        if (!vehicle) return [];
+        if (!vehicle || !vehicles) return [];
         return vehicles
             .filter(v => v.category === vehicle.category && v.id !== vehicle.id)
             .slice(0, 4);
-    }, [vehicle]);
+    }, [vehicle, vehicles]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -68,6 +74,15 @@ export default function VehicleDetails() {
             }
         }
     }, [activeImage]);
+
+    if (isLoading) {
+        return (
+            <div className="w-full min-h-[60vh] flex flex-col items-center justify-center bg-white">
+                <div className="w-12 h-12 border-4 border-[#006CFA] border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-gray-500 font-bold animate-pulse">Cargando detalles...</p>
+            </div>
+        );
+    }
 
     if (!vehicle) {
         return (
@@ -292,6 +307,7 @@ export default function VehicleDetails() {
                                 <Link
                                     key={rv.id}
                                     to={`/vehicle/${rv.id}`}
+                                    aria-label={`Ver detalles de ${rv.title}`}
                                     className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all"
                                 >
                                     <div className="aspect-[4/3] bg-gray-50 overflow-hidden">

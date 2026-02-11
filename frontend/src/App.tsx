@@ -4,11 +4,14 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import TabNavigation from './components/TabNavigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useVehicles } from './hooks/useVehicles';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('camiones');
   const [navHeight, setNavHeight] = useState<number>(132);
-  const [tabHeight, setTabHeight] = useState<number>(78);
+  const [tabHeight, setTabHeight] = useState<number>(60);
+  const { vehicles, isLoading, error } = useVehicles();
+  const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -56,6 +59,7 @@ export default function App() {
   // Navigate when user changes tab via UI
   const handleTabChange = (tabId: string) => {
     if (tabId !== activeTab) {
+      setSearchQuery('');
       navigate(`/${tabId}`);
     }
     setActiveTab(tabId);
@@ -85,6 +89,8 @@ export default function App() {
           onTabChange={handleTabChange}
           offsetTopPx={navHeight}
           className="w-full"
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
         />
       )}
 
@@ -92,15 +98,16 @@ export default function App() {
         className="flex-1 w-full"
         style={{ paddingTop: showTabNavigation ? navHeight + tabHeight : navHeight }}
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="w-full"
           >
-            <Outlet context={{ activeTab, navHeight }} />
+            <Outlet context={{ activeTab, navHeight, vehicles, isLoading, error, searchQuery, setSearchQuery }} />
           </motion.div>
         </AnimatePresence>
       </main>
